@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TestApp</string>
+
+    <string name="tab_text_apitest">APITEST</string>
+    <string name="tab_text_jsontest">JSON</string>
 </resources>
