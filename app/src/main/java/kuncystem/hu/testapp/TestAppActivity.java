@@ -1,31 +1,88 @@
 package kuncystem.hu.testapp;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
+import android.util.Log;
+import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kuncystem.hu.testapp.adapters.ViewPagerAdapter;
 import kuncystem.hu.testapp.fragments.FragmentApiTest;
 import kuncystem.hu.testapp.fragments.FragmentJsonTest;
 
 public class TestAppActivity extends AppCompatActivity {
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context ctxt, Intent intent) {
+            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+            createNotification(level);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_app);
 
+        //check, the loading of view elements are successful or not
+        boolean error = true;
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        if(viewPager != null) {
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        //add fragments to the adapter
-        adapter.addFragment(new FragmentApiTest(), getString(R.string.tab_text_apitest));
-        adapter.addFragment(new FragmentJsonTest(), getString(R.string.tab_text_jsontest));
-        viewPager.setAdapter(adapter);
+            //add fragments to the adapter
+            adapter.addFragment(new FragmentApiTest(), getString(R.string.tab_text_apitest));
+            adapter.addFragment(new FragmentJsonTest(), getString(R.string.tab_text_jsontest));
+            viewPager.setAdapter(adapter);
 
-        //set the tablayout
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+            //set the tablayout
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            if(tabLayout != null) {
+                tabLayout.setupWithViewPager(viewPager);
+                error = false;
+            }
+        }
+
+        //loading of view elements are is unsuccessful
+        if(error){
+            Toast.makeText(this, getString(R.string.toast_app_load_error), Toast.LENGTH_LONG).show();
+        }
+
+        final Intent batteryIntent = this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                createNotification(batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0));
+            }
+        }, 60000, 60000);
+    }
+
+    private void createNotification(int level){
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setSmallIcon(R.mipmap.ic_android_white_36dp);
+        mBuilder.setContentTitle(String.valueOf(level) + " %");
+        mBuilder.setContentText(getString(R.string.notif_battery));
+
+        Intent notificationIntent = new Intent(this, TestAppActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, mBuilder.build());
     }
 }

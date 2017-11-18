@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="defaultAppBackground">#FAFAFA</color>
+    <color name="defaultAppBackground">#fafafa</color>
     <color name="defaultAppTabColor">#969696</color>
     <color name="defaultAppTabSelectedColor">#B40000</color>
     <color name="defaultAppSelectedListItem">#B7E1B8</color>

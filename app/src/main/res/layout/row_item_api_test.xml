@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/defaultAppBackground"
     android:orientation="horizontal"
     android:padding="20dp"
     android:weightSum="1">
@@ -13,16 +14,15 @@
         android:layout_height="match_parent"
         android:layout_weight="0.3"
         android:adjustViewBounds="true"
-        android:scaleType="fitStart"
         app:srcCompat="@drawable/ice_cream_sandwich" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_weight="0.7"
-        android:weightSum="1"
-        android:gravity="right">
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <RelativeLayout
             android:layout_width="0dp"

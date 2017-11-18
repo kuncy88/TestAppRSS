@@ -3,4 +3,25 @@
 
     <string name="tab_text_apitest">APITEST</string>
     <string name="tab_text_jsontest">JSON</string>
+
+    <string name="toast_app_load_error">Betöltés sikertelen!</string>
+    <string name="toast_date_parse_error">Sikertelen dátum konvertálás! (%1$s)</string>
+    <string name="toast_date_error">Dátum meghatározása sikertelen!</string>
+    <string name="toast_load_error_network_error">Nem sikerült letölteni az adatokat!</string>
+    <string name="toast_load_no_network">Nincs elérhető hálózat, kérem ellenőrizze internetes kapcsolatát!</string>
+    <string name="toast_response_error">Nem sikerült feldolgozni az adatokat!</string>
+    <string name="toast_update_success">Adatok frissítése sikeresen megtörtént!</string>
+    <string name="toast_no_write_server_response">Nem sikerült a szervertől érkezett választ a fájlba menteni!</string>
+
+    <string name="dialog_title_error">Hiba!</string>
+    <string name="dialog_error_network">Nincs elérhető hálózat, kérem ellenőrizze internetes kapcsolatát!</string>
+    <string name="dialog_exit">Kilépés</string>
+    <string name="dialog_reload">Újratöltés</string>
+
+    <string name="storage_ext_error_just_read">Figyelem! A külső tárhely csak olvasható, az írás nem lehetséges!</string>
+    <string name="storage_ext_error_no_read_write">Figyelem! A külső tárhely nem írható és nem olvasható!</string>
+
+    <string name="file_content_read_error">A fájlt nem lehet beolvasni: %1$s</string>
+
+    <string name="notif_battery">Battery state</string>
 </resources>
