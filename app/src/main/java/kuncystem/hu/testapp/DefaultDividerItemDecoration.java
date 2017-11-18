@@ -13,6 +13,11 @@ import android.view.View;
 public class DefaultDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
+    /**
+     * This class create separators in the RecyclerView
+     *
+     * @param context Current state of the application
+     * */
     public DefaultDividerItemDecoration(Context context) {
         mDivider = context.getResources().getDrawable(R.drawable.divider);
     }

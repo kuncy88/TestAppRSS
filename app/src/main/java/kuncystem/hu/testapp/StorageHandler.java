@@ -27,25 +27,44 @@ public class StorageHandler {
 
     public STATE currentState = STATE.NONE;
 
+    /**
+     * This object handle the files operations. This object check the external storage automatically that we can read and write this.
+     *
+     * @param context Current state of the application
+     * */
     public StorageHandler(Context context){
         this.context = context;
 
         currentState = this.check();
     }
 
+    /**
+     * Check the external storage state.
+     * */
     private STATE check(){
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             // Can read and write the media
             return STATE.READ_WRITE;
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            //just read
             return STATE.READ;
         } else {
+            //we can't read or write
             return STATE.NONE;
         }
     }
 
+    /**
+     * Create(if necessary) and write a file. This method will overrides the file content.
+     *
+     * @param fileName The file that we can write.
+     * @param content The new file content
+     *
+     * @return It will return true for success otherwise it will return false.
+     * */
     public boolean write(String fileName, String content){
+        //check the storage state
         switch(currentState){
             case NONE:{
                 Toast.makeText(context, context.getString(R.string.storage_ext_error_no_read_write), Toast.LENGTH_LONG).show();
@@ -81,6 +100,13 @@ public class StorageHandler {
         return false;
     }
 
+    /**
+     * Read file content.
+     *
+     * @param fileName The file that we can read.
+     *
+     * @return It will return the content of the file for success otherwise it will return null.
+     * */
     public String read(String fileName) {
         if(currentState == STATE.NONE){
             Toast.makeText(context, context.getString(R.string.storage_ext_error_no_read_write), Toast.LENGTH_LONG).show();
@@ -113,6 +139,9 @@ public class StorageHandler {
         return null;
     }
 
+    /**
+     * Get current directory path.
+     * */
     public String getDirectory(){
         File root = Environment.getExternalStorageDirectory();
         if(root == null){

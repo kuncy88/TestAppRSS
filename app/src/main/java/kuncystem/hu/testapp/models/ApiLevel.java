@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
  * Created by kuncy on 2017. 11. 18..
  */
 
+/**
+ * This is a model class to the server response
+ * */
 public class ApiLevel {
     @SerializedName("imageUrl")
     private String ImageUrl;

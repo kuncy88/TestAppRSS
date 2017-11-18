@@ -1,9 +1,5 @@
 package kuncystem.hu.testapp.adapters;
 
-/**
- * Created by kuncy on 2017. 11. 17..
- */
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

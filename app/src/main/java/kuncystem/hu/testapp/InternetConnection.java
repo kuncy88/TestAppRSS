@@ -9,6 +9,11 @@ import android.net.ConnectivityManager;
 
 public class InternetConnection {
 
+    /**
+     * Check the internet connection
+     *
+     * @return true: we have internet, false: we haven't internet
+     * */
     public static boolean isNetworkConnected(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

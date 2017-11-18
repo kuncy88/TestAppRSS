@@ -2,7 +2,6 @@ package kuncystem.hu.testapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import kuncystem.hu.testapp.StorageHandler;
  */
 
 public class FragmentJsonTest extends Fragment {
+    //this object handle the files operations
     private StorageHandler storageHandler;
 
     private TextView textView;
@@ -45,11 +45,13 @@ public class FragmentJsonTest extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        //if we choose this fragment then we read the response file and we will show the content of this file.
         if (isVisibleToUser) {
+            //read content
            String content = storageHandler.read(FragmentApiTest.responseFile);
-           if(content != null){
+           if(content != null){              //this read was success
                textView.setText(content);
-           }else{
+           }else{                           //we can't read the file
                Toast.makeText(
                        getActivity(),
                        String.format(getString(R.string.file_content_read_error), storageHandler.getDirectory() + File.separator + FragmentApiTest.responseFile),

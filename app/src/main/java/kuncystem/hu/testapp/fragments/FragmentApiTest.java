@@ -37,6 +37,7 @@ import retrofit2.Response;
  */
 
 public class FragmentApiTest extends Fragment {
+    //We will write this file when response arrive from the server
     public final static String responseFile = "serverResponse.json";
 
     private RecyclerView recyclerView;
@@ -47,6 +48,7 @@ public class FragmentApiTest extends Fragment {
     private List<ApiLevel> apiLevel;
     private ApiInterface apiInterface;
 
+    //this object handle the files operations
     private StorageHandler storageHandler;
 
     public FragmentApiTest() {
@@ -76,71 +78,90 @@ public class FragmentApiTest extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                //pull to refresh
                 FragmentApiTest.this.startSync();
             }
         });
 
-
+        //start
         this.startSync();
         return view;
     }
 
+    /**
+     * This method send request to the server and waiting for the response.
+     * When this method gets an json response then it will create new RecyclerAdapter and it will save the response into the file.
+     * */
     private void startSync(){
+        //create new retrofit aoi interface
         apiInterface = RetrofitApiClient.getApiClient().create(ApiInterface.class);
 
-        //checking internet connection
+        //check the internet connection
         if(InternetConnection.isNetworkConnected(getActivity())) {
+            //send the request to the server
             Call<ResponseBody> call = apiInterface.getJsonString(2);
             call.enqueue(new Callback<ResponseBody>() {
 
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
+                    if (response.isSuccessful()) {                      //we get the response, the request was success
                         try {
                             String json = response.body().string();
 
+                            //write the response data into the file
                             if(!storageHandler.write(responseFile, json)){
                                 Toast.makeText(getActivity(), getString(R.string.toast_no_write_server_response), Toast.LENGTH_LONG).show();
                             }
 
+                            //create ApiLevel objects from json string
                             Gson gson = new Gson();
-
                             apiLevel = gson.fromJson(json, new TypeToken<List<ApiLevel>>() {
                             }.getType());
+
+                            //create and set new adapter that the recycler view use
                             adapter = new RecyclerAdapter(getActivity(), apiLevel);
                             recyclerView.setAdapter(adapter);
-                            endSync(true);
+
+                            //marker, we reach the end of operations
+                            endSync(null);
                         } catch (IOException e) {
                             e.printStackTrace();
-                            Toast.makeText(getActivity(), getString(R.string.toast_response_error), Toast.LENGTH_SHORT).show();
-                            endSync(false);
+                            endSync(getString(R.string.toast_response_error));
                         }
-                    } else {
-                        Toast.makeText(getActivity(), getString(R.string.toast_load_error_network_error), Toast.LENGTH_SHORT).show();
-                        endSync(false);
+                    } else {                                        //the request was unsuccessful
+                        endSync(getString(R.string.toast_load_error_network_error));
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    //it happened error, so we display message on ui
                     recyclerView.setAdapter(null);
-                    Toast.makeText(getActivity(), getString(R.string.toast_load_error_network_error), Toast.LENGTH_SHORT).show();
-                    endSync(false);
+                    endSync(getString(R.string.toast_load_error_network_error));
                 }
             });
-        }else{
-            this.endSync(false);
+        }else{                                      //no internet connection
+            this.endSync(null);
             createErrorDialog();
         }
     }
 
-    public void endSync(boolean success){
+    /**
+     * End of the operations we can run other process.
+     *
+     * @param toastText If we want to display any message with Toast object we can add this parameter.
+     *                  If this value of parameter is null we won't display nothing
+     * */
+    public void endSync(String toastText){
         swipeRefreshLayout.setRefreshing(false);
-        if(success){
-            Toast.makeText(getActivity(), getString(R.string.toast_update_success), Toast.LENGTH_SHORT).show();
+        if(toastText != null){
+            Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Create new dialog if we haven't internet.
+     * */
     private void createErrorDialog(){
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

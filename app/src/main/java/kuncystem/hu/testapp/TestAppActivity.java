@@ -12,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Timer;
@@ -61,7 +60,9 @@ public class TestAppActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.toast_app_load_error), Toast.LENGTH_LONG).show();
         }
 
+        //start battery monitoring, if it will be refreshed the charge level we will refresh the notification
         final Intent batteryIntent = this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        //every one minute we will refresh the notification.
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -70,6 +71,11 @@ public class TestAppActivity extends AppCompatActivity {
         }, 60000, 60000);
     }
 
+    /**
+     * Create or update notification message.
+     *
+     * @param level battery charge level
+     * */
     private void createNotification(int level){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.mipmap.ic_android_white_36dp);
