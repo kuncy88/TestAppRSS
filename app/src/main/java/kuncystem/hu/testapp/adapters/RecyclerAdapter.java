@@ -53,8 +53,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         Glide.with(ctx).load(apiLevelList.get(position).getImageUrl())
                 .into(holder.ivImage);
 
-        holder.tvCodeName.setText(apiLevelList.get(position).getCodeName());
-        holder.tvApiLevel.setText(apiLevelList.get(position).getApiLevel()+"");
+        String text = apiLevelList.get(position).getCodeName();
+        holder.tvCodeName.setText((text == null) ? "" : text);
+
+        Integer level = apiLevelList.get(position).getApiLevel();
+        holder.tvApiLevel.setText((level == null) ? "" : level.toString());
 
         String version = apiLevelList.get(position).getVersionNumber();
         if(version != null) {
@@ -73,6 +76,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 holder.tvRelease.setText(format.format(new Date(date.intValue() * 1000L)));
             } catch (Exception e) {
                 e.printStackTrace();
+
+                holder.tvRelease.setText("");
                 Toast.makeText(ctx, String.format(ctx.getString(R.string.toast_date_parse_error), date.intValue() + ""), Toast.LENGTH_SHORT).show();
             }
         }else{
@@ -99,7 +104,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         /**
          * This object contains one row data
          *
-         * @param itemView a view layout that currently we use
+         * @param itemView a view layout what we use currently
          * */
         public ViewHolder(View itemView) {
             super(itemView);

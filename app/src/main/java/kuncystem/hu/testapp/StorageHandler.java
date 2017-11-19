@@ -28,7 +28,7 @@ public class StorageHandler {
     public STATE currentState = STATE.NONE;
 
     /**
-     * This object handle the files operations. This object check the external storage automatically that we can read and write this.
+     * This object handle the files operations. This object check the external storage automatically that we can read and/or write.
      *
      * @param context Current state of the application
      * */
@@ -101,7 +101,7 @@ public class StorageHandler {
     }
 
     /**
-     * Read file content.
+     * Read the file content.
      *
      * @param fileName The file that we can read.
      *

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -48,6 +49,8 @@ public class FragmentApiTest extends Fragment {
     private List<ApiLevel> apiLevel;
     private ApiInterface apiInterface;
 
+    private Button btnRefresh;
+
     //this object handle the files operations
     private StorageHandler storageHandler;
 
@@ -83,6 +86,16 @@ public class FragmentApiTest extends Fragment {
             }
         });
 
+        //this is a refresh button
+        //this button will appear if we can't display data in the RecyclerView
+        btnRefresh = (Button) view.findViewById(R.id.btn_refresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentApiTest.this.startSync();
+            }
+        });
+
         //start
         this.startSync();
         return view;
@@ -93,7 +106,10 @@ public class FragmentApiTest extends Fragment {
      * When this method gets an json response then it will create new RecyclerAdapter and it will save the response into the file.
      * */
     private void startSync(){
-        //create new retrofit aoi interface
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+        btnRefresh.setVisibility(View.GONE);
+
+        //create new retrofit api interface
         apiInterface = RetrofitApiClient.getApiClient().create(ApiInterface.class);
 
         //check the internet connection
@@ -118,7 +134,7 @@ public class FragmentApiTest extends Fragment {
                             apiLevel = gson.fromJson(json, new TypeToken<List<ApiLevel>>() {
                             }.getType());
 
-                            //create and set new adapter that the recycler view use
+                            //create and set new adapter what the recycler view use
                             adapter = new RecyclerAdapter(getActivity(), apiLevel);
                             recyclerView.setAdapter(adapter);
 
@@ -147,15 +163,21 @@ public class FragmentApiTest extends Fragment {
     }
 
     /**
-     * End of the operations we can run other process.
+     * We can run other process end of the operations .
      *
-     * @param toastText If we want to display any message with Toast object we can add this parameter.
-     *                  If this value of parameter is null we won't display nothing
+     * @param toastText If we want to show any message with Toast object, we can add this parameter.
+     *                  If this value of parameter is null we won't show nothing
      * */
     public void endSync(String toastText){
         swipeRefreshLayout.setRefreshing(false);
         if(toastText != null){
             Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
+        }
+
+        RecyclerAdapter adapter = (RecyclerAdapter) recyclerView.getAdapter();
+        if(adapter == null || adapter.getItemCount() == 0){
+            swipeRefreshLayout.setVisibility(View.GONE);
+            btnRefresh.setVisibility(View.VISIBLE);
         }
     }
 

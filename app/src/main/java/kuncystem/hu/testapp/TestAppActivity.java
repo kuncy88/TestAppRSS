@@ -22,6 +22,8 @@ import kuncystem.hu.testapp.fragments.FragmentApiTest;
 import kuncystem.hu.testapp.fragments.FragmentJsonTest;
 
 public class TestAppActivity extends AppCompatActivity {
+    private static final int NOTIF_ID = 2222;
+
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
         @Override
         public void onReceive(Context ctxt, Intent intent) {
@@ -47,7 +49,7 @@ public class TestAppActivity extends AppCompatActivity {
             adapter.addFragment(new FragmentJsonTest(), getString(R.string.tab_text_jsontest));
             viewPager.setAdapter(adapter);
 
-            //set the tablayout
+            //set the tablelayout
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
             if(tabLayout != null) {
                 tabLayout.setupWithViewPager(viewPager);
@@ -55,14 +57,14 @@ public class TestAppActivity extends AppCompatActivity {
             }
         }
 
-        //loading of view elements are is unsuccessful
+        //loading is unsuccessful
         if(error){
             Toast.makeText(this, getString(R.string.toast_app_load_error), Toast.LENGTH_LONG).show();
         }
 
-        //start battery monitoring, if it will be refreshed the charge level we will refresh the notification
+        //start battery monitoring, if it will refresh the charge level, we will refresh the notification
         final Intent batteryIntent = this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        //every one minute we will refresh the notification.
+        //we will refresh the notification every one minute.
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -72,7 +74,7 @@ public class TestAppActivity extends AppCompatActivity {
     }
 
     /**
-     * Create or update notification message.
+     * Create or update notification message with battery info.
      *
      * @param level battery charge level
      * */
@@ -89,6 +91,6 @@ public class TestAppActivity extends AppCompatActivity {
 
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, mBuilder.build());
+        manager.notify(NOTIF_ID, mBuilder.build());
     }
 }

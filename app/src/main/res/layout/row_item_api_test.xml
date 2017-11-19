@@ -13,8 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
-        android:adjustViewBounds="true"
-        app:srcCompat="@drawable/ice_cream_sandwich" />
+        android:adjustViewBounds="true" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -37,6 +36,7 @@
                 android:layout_alignParentTop="true"
                 android:text="Ice Cream Sandwich"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/defaultAppDark"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:text="14"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/defaultAppDark" />
 
                 <TextView
                     android:id="@+id/api_test_version"
@@ -62,7 +63,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
                     android:text="4.0-4.0.4"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/defaultAppDark" />
             </LinearLayout>
 
             <TextView
@@ -72,7 +74,8 @@
                 android:layout_below="@id/container1"
                 android:layout_marginTop="5dp"
                 android:text="2016 / 04 / 10"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/defaultAppDark" />
 
         </RelativeLayout>
     </LinearLayout>

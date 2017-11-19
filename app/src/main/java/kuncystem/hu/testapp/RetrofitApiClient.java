@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by kuncy on 2017. 11. 18..
  */
 /**
- * Create retrofit object. We can connect through the object to the server.
+ * Create retrofit object. We can connect to the server through the object.
  * */
 public class RetrofitApiClient {
 

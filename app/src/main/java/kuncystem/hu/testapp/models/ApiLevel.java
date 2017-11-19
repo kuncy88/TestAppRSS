@@ -19,8 +19,8 @@ public class ApiLevel {
     @SerializedName("versionNumber")
     private String VersionNumber;
 
-    @SerializedName("rowType")
-    private Integer RowType;
+    //@SerializedName("rowType")
+    private Integer RowType = 0;
 
     @SerializedName("codeName")
     private String CodeName;
